@@ -2,7 +2,7 @@
 
 client_id = "cc6261cee5ce49a98e6d6d84f4d4e432"
 name = "Wholesale I95dev"
-application_url = "https://bhutan-subscribe-lying-real.trycloudflare.com"
+application_url = "https://wings-survival-corporation-theatre.trycloudflare.com"
 embedded = true
 handle = "wholesale-i95dev"
 
@@ -61,15 +61,15 @@ api_version = "2025-07"
 scopes = "read_customers,write_customers,read_companies,write_companies,read_orders,write_orders,read_products,write_products,write_discounts,write_content,write_online_store_navigation"
 
 [app_proxy]
-url = "https://bhutan-subscribe-lying-real.trycloudflare.com/apps/proxy"
+url = "https://wings-survival-corporation-theatre.trycloudflare.com/apps/proxy"
 subpath = "proxy"
 prefix = "apps"
 
 [auth]
 redirect_urls = [
-  "https://bhutan-subscribe-lying-real.trycloudflare.com/auth/callback",
-  "https://bhutan-subscribe-lying-real.trycloudflare.com/auth/shopify/callback",
-  "https://bhutan-subscribe-lying-real.trycloudflare.com/api/auth/callback"
+  "https://wings-survival-corporation-theatre.trycloudflare.com/auth/callback",
+  "https://wings-survival-corporation-theatre.trycloudflare.com/auth/shopify/callback",
+  "https://wings-survival-corporation-theatre.trycloudflare.com/api/auth/callback"
 ]
 
 [pos]

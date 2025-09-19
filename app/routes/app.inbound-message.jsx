@@ -41,9 +41,17 @@ export const loader = async ({ request }) => {
     skip: offset,
     take: limit,
   });
+  
+  // Get the IDs of the current page entries
+  const entryIds = entries.map(entry => entry.id);
+  
+  // Fetch dataEntries that correspond to the current page's message IDs
   const dataEntries = await db.I95DevErpData.findMany({
-    skip: offset,
-    take: limit,
+    where: {
+      msgId: {
+        in: entryIds
+      }
+    }
   });
   
 
@@ -249,7 +257,7 @@ export default function InboundMessageQueue() {
     }
   };
 
-  const rows = (filterType === "company" ? [] : filteredNonCompanyEntries).map((entry) => [
+  const rows = (filterType === "company" ? [] : (filterType === "all" ? filteredEntries : filteredNonCompanyEntries)).map((entry) => [
     entry.id,
     entry.entityCode.charAt(0).toUpperCase() + entry.entityCode.slice(1),
     formatDate(entry.createdAt),
@@ -339,7 +347,7 @@ export default function InboundMessageQueue() {
                 Entities Request Data
               </Text> */}
               <Text variant="bodyMd" as="p" tone="subdued">
-                 Total entries: {totalCount} | Companies: {companyEntries.length} | Others: {nonCompanyEntries.length}
+                 Total entries: {totalCount} 
               </Text>
               
 			<InlineStack gap="400" align="space-between">
@@ -374,7 +382,7 @@ export default function InboundMessageQueue() {
                )}
               
               {/* Company Grid Section */}
-              {(filterType === "all" || filterType === "company") && (
+              {(filterType === "company") && (
                 <Card>
                   <BlockStack gap="400">
                     <Text variant="headingMd" as="h2">
@@ -410,13 +418,13 @@ export default function InboundMessageQueue() {
               )}
 
               {/* Other Entities Grid Section */}
-              {filterType !== "company" && (
+              {(filterType !== "company") && (
                 <Card>
                   <BlockStack gap="400">
                     <Text variant="headingMd" as="h2">
-                      {filterType === "all" ? "Other Entity Updates" : `${filterType.charAt(0).toUpperCase() + filterType.slice(1)} Updates`} ({filterType === "all" ? nonCompanyEntries.length : filteredNonCompanyEntries.length})
+                      {filterType === "all" ? "All Updates" : `${filterType.charAt(0).toUpperCase() + filterType.slice(1)} Updates`} ({filterType === "all" ? filteredEntries.length : filteredNonCompanyEntries.length})
                     </Text>
-                    {(filterType === "all" ? nonCompanyEntries.length : filteredNonCompanyEntries.length) === 0 ? (
+                    {(filterType === "all" ? filteredEntries.length : filteredNonCompanyEntries.length) === 0 ? (
                       <EmptyState
                         heading="No entity update entries yet"
                         image="https://cdn.shopify.com/s/files/1/0262/4071/2726/files/emptystate-files.png"
